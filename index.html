@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <style type="text/css">
+            button {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                border: 3px solid black;
+                width: 180px;
+                height:180px;
+            }
+        </style>
+    </head>
+    <body>
+        <script src="script.js"></script>
+        <script src="interaction.js"></script>
+
+        <table>
+            <tr>
+              <td><button id="00" onclick="select(0,0)"></button></td>
+              <td><button id="01" onclick="select(0,1)"></button></td>
+              <td><button id="02" onclick="select(0,2)"></button></td>
+            </tr>
+            <tr>
+              <td><button id="10" onclick="select(1,0)"></button></td>
+              <td><button id="11" onclick="select(1,1)"></button></td>
+              <td><button id="12" onclick="select(1,2)"></button></td>
+            </tr>
+            <tr>
+              <td><button id="20" onclick="select(2,0)"></button></td>
+              <td><button id="21" onclick="select(2,1)"></button></td>
+              <td><button id="22" onclick="select(2,2)"></button></td>
+            </tr>
+        </table>  
+        
+        <div >
+            <button style="background-color:red;color:white;width:550px;height:80px;" id="endgame" hidden="true" onclick="location.reload(true)"> Resetar </button>
+        </div>
+    </body>
+</html>
