@@ -10,7 +10,7 @@ class Node {
     }
 
     isTerminal() {
-        for (i = 0; i < 9; i++) {
+        for (var i = 0; i < 9; i++) {
             if (this.board[i] == '')
                 return false;
         }
@@ -28,8 +28,11 @@ class Node {
 }
 
 function play(currentState) {
+    console.log(currentState);
     var node = new Node(currentState);
-    minimax(node, asAI);
+    var value = minimax(node, asAI);
+    console.log(value);
+    return value;
 }
 
 function itsWin(boardState, player) {
@@ -53,7 +56,19 @@ function minimax(node, player){
 
     var avaibleSpots = node.emptyIndexies();
 
-    console.log(avaibleSpots);
+    if (node.isTerminal()) {
+
+        if (itsWin(node.board, asPlayer)) {
+            return {score: -1};
+        }
+        else if (itsWin(node.board, asAI)) {
+            return {score: 1};
+        }
+        else if (avaibleSpots.length === 0) {
+            return {score: 0};
+        }
+
+    }
 
     if (itsWin(node.board, asPlayer)) {
         return {score: -1};
@@ -70,7 +85,7 @@ function minimax(node, player){
     for (i = 0; i < avaibleSpots.length; i++) {
 
         var move = {};
-        move.index = node.board[avaibleSpots[i]];
+        move.index = avaibleSpots[i];
         node.board[avaibleSpots[i]] = player;
 
         if (player == asAI){
@@ -82,7 +97,7 @@ function minimax(node, player){
             move.score = result.score;
         }
 
-        node.board[avaibleSpots[i]] = move.index;
+        node.board[avaibleSpots[i]] = '';
         moves.push(move);
     }
 
