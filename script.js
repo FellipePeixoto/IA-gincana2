@@ -12,7 +12,7 @@ class Node {
             if (this.board[i] == '')
                 return false;
         }
-        //console.log(this.board);
+
         return true;
     }
 
@@ -44,65 +44,67 @@ class Node {
 }
 
 function play(currentState) {
+
     var node = new Node(currentState);
-    var bestMoveValue = -1;
-    var played = -1;
-    var avaibleSpots = node.emptyIndexies();
     
-    avaibleSpots.forEach(element => {
-        node.board[element] = asPlayer
-        var moveValue = minimax(node, 0, false);
-        node.board[element] = '';
+    var avaibleMoves = node.emptyIndexies();
+    var bestMove = -1;
+    var bestScore = -1;
 
-        if (moveValue > bestMoveValue){
-            bestMoveValue = moveValue;
-            played = element;
+    for (i = 0; i < avaibleMoves.length; i++){
+        node.board[avaibleMoves[i]] = asAI
+
+        var score = minimax(node, 1000, true);
+
+        if (score > bestScore) {
+            bestScore = score;
+            bestMove = avaibleMoves[i];
         }
-    });
+    }
 
-    console.log(played);
-    return played;
+    console.log(bestScore);
+    return bestMove;
 }
 
-function minimax(node, depth, maxPlayer){
+function minimax(node, maxAI){
 
-    if (node.isThisWin(asAI)) {
-        return 1 - depth;
-    }
-    
-    if (node.isThisWin(asPlayer)){
-        return -1 + depth;
-    }
-    
-    if (node.isTerminal())
-    {
-        return 0;
+    if (node.isTerminal) {
+        if (node.isThisWin(asAI))
+            return 1;
+        else if (node.isThisWin(asPlayer))
+            return -1;
+        else 
+            return  0;
     }
 
-    if (maxPlayer){
-        var minValue = Number.NEGATIVE_INFINITY;
-
+    if (maxAI){
+        var max = Number.NEGATIVE_INFINITY;
         var avaibleSpots = node.emptyIndexies();
 
-        avaibleSpots.forEach(element => {
-            node.board[element] = asPlayer;
-            minValue = Math.max(minValue, minimax(node, depth + 1, false));
-            node.board[element] = '';
-        });
+        for (i = 0; i < avaibleSpots.length; i++){
+            var newNode = new node(node.board);
+            newNode.board[avaibleSpots[i]] = asAI;
+            
+            max = Math.max(max, minimax(newNode, !maxAI));
 
-        return minValue;
+            newNode.board[avaibleSpots[i]] = '';
+        }
+
+        return max;
     }
     else {
-        var maxValue = Number.POSITIVE_INFINITY;
-
+        var min = Number.POSITIVE_INFINITY;
         var avaibleSpots = node.emptyIndexies();
 
-        avaibleSpots.forEach(element => {
-            node.board[element] = asAI;
-            maxValue = Math.min(maxValue, minimax(node, depth + 1, true));
-            node.board[element] = '';
-        });
+        for (i = 0; i < avaibleSpots.length; i++){
+            var newNode = new node(node.board);
+            newNode.board[avaibleSpots[i]] = asPlayer;
+            
+            min = Math.min(max, minimax(newNode, !maxAI));
 
-        return maxValue;
+            newNode.board[avaibleSpots[i]] = '';
+        }
+
+        return min;
     }
 }
